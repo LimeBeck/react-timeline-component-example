@@ -11,12 +11,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
-.timeline-title {
-  font-weight: bold;
-  font-size: 16px;
-  color: #333;
-  white-space: nowrap;
-  line-height: 1; /* Убираем лишние вертикальные отступы */
-  height: 40px;
-}

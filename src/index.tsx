@@ -2,66 +2,62 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { Timeline } from './components/timeline/Timeline';
-import { ScaleRuler } from './components/timeline/ScaleRuler';
 import { format } from 'date-fns';
-import { Columns } from './components/columns/Columns';
-import { genEvents } from './genEvents';
+import { Timeline, TimelineEvent } from './components/scalableTimeline/Timeline';
+import { generateNonOverlappingDateRanges } from './utlis';
 
 const timelineStart = new Date(2024, 10, 23, 8, 0); // Начало шкалы (8:00)
-const timelineEnd = new Date(2024, 10, 23, 18, 0); // Конец шкалы (18:00)
+const timelineEnd = new Date(2024, 10, 29, 18, 0); // Конец шкалы (18:00)
+const dateFormat = (date: Date) => format(date, "HH:mm dd\u2011MM\u2011yyyy")
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-const timelines = [...Array(10).keys()].map((_, index) => {
+type CustomData = { extraInfo: string };
+
+const PopupComponent: React.FC<{ event: TimelineEvent<CustomData> }> = ({
+  event,
+}) => (
+  <div>
+    <strong>{event.description}</strong>
+    <p>
+      {dateFormat(event.start)} - {dateFormat(event.end)}
+    </p>
+    <p>{event.data.extraInfo}</p>
+  </div>
+);
+
+const genEvents = (start: Date, end: Date) => generateNonOverlappingDateRanges(start, end, 4).map((ev, index) => {
+  return {
+    start: ev.start,
+    end: ev.end,
+    description: `Event ${index + 1}`,
+    data: {
+      extraInfo: `Extra info for event ${index + 1}`
+    }
+  };
+});
+
+const timelineData = [...Array(10).keys()].map((_, index) => {
   return {
     events: genEvents(timelineStart, timelineEnd),
-    title: `Мой таймлайн ${index + 1}`
+    name: `Мой таймлайн ${index + 1}`
   }
 })
-
-const columns = [
-  {
-    content: <>{timelines.map((line, index) => {
-      return <div className='timeline-title'>{line.title}</div>
-    })}</>,
-    proportion: 1
-  },
-  {
-    content: <>{[...timelines.map((line, index) => {
-      return <Timeline
-        events={line.events}
-        timelineStart={timelineStart}
-        timelineEnd={timelineEnd}
-      />
-    }), <ScaleRuler start={timelineStart} end={timelineEnd} timeUnit="hours" unitStep={1} />]}</>,
-    proportion: 4
-  }
-]
 
 root.render(
   <React.StrictMode>
     <div>
       <h1>Timeline with Scale Example</h1>
-      <Columns columns={columns} />
-      {
-        timelines.map((line, index) => {
-          return <Timeline
-            events={line.events}
-            timelineStart={timelineStart}
-            timelineEnd={timelineEnd}
-          />
-        })
-      }
-
-      <ScaleRuler
+      <Timeline
+        rows={timelineData}
         start={timelineStart}
         end={timelineEnd}
-        timeUnit="hours"
-        unitStep={1}
-        dateFormat={(date) => format(date, "HH:mm dd\u2011MM\u2011yyyy")}
+        PopupComponent={PopupComponent}
+        timeMarkers="both"
+        rowLabels="left"
+        formatTime={dateFormat}
       />
     </div>
   </React.StrictMode>

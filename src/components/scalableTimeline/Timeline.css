@@ -1,0 +1,79 @@
+.timeline-container {
+  position: relative;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  border: 1px solid #ccc;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.timeline-row {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-top: 20px; /* Отступ между строками таймлайнов */
+}
+
+.timeline-row-label {
+  flex: 0 0 120px; /* Фиксированная ширина для названий */
+  text-align: center;
+  font-weight: bold;
+}
+
+.timeline-events {
+  flex: 1;
+  position: relative;
+  height: 50px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.timeline-event {
+  position: absolute;
+  top: 5px;
+  height: 40px;
+  background-color: #4285f4;
+  border-radius: 4px;
+  color: white;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.timeline-popup {
+  position: absolute;
+  top: -60px;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  color: black;
+}
+
+.time-markers {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 10px; /* Отступ под временными метками */
+  padding-left: 120px; /* Учет ширины названий */
+  height: 30px;
+  line-height: 1.2;
+}
+
+.time-marker {
+  position: relative;
+  white-space: normal;
+  text-align: center;
+  word-wrap: break-word;
+  line-height: 1.2;
+  max-width: 80px;
+  transform: translateX(-50%);
+}
