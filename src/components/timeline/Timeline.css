@@ -4,14 +4,6 @@
   gap: 20px; /* Отступ между заголовком и шкалой */
 }
 
-.timeline-title {
-  font-weight: bold;
-  font-size: 16px;
-  color: #333;
-  white-space: nowrap;
-  line-height: 1; /* Убираем лишние вертикальные отступы */
-}
-
 .timeline {
   position: relative;
   flex-grow: 1;
@@ -60,6 +52,8 @@
   z-index: 3; /* Лейбл над попапом */
   white-space: nowrap;
   padding: 0 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .timeline-popup {

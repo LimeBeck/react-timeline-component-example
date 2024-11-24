@@ -1,5 +1,6 @@
 import React from "react";
 import "./Timeline.css";
+import { format } from "date-fns";
 
 export interface TimelineEvent {
   start: Date;
@@ -55,9 +56,9 @@ export const Timeline: React.FC<TimelineProps> = ({ events, timelineStart, timel
 };
 
 const DefaultPopup: React.FC<{ event: TimelineEvent }> = ({ event }) => (
-  <div>
+  <div className="default-popup">
     <p><strong>{event.label}</strong></p>
-    <p>Start: {event.start.toLocaleString()}</p>
-    <p>End: {event.end.toLocaleString()}</p>
+    <p>Start: {format(event.start, "HH:mm dd\u2011MM\u2011yyyy")}</p>
+    <p>End: {format(event.end, "HH:mm dd\u2011MM\u2011yyyy")}</p>
   </div>
 );

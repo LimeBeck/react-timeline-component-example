@@ -2,23 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { Timeline } from './Timeline';
-import { generateNonOverlappingDateRanges } from './utlis';
-import { ScaleRuler } from './ScaleRuler';
-import { title } from 'process';
-import { Columns } from './Columns';
+import { Timeline } from './components/timeline/Timeline';
+import { ScaleRuler } from './components/timeline/ScaleRuler';
+import { format } from 'date-fns';
+import { Columns } from './components/columns/Columns';
+import { genEvents } from './genEvents';
 
 const timelineStart = new Date(2024, 10, 23, 8, 0); // Начало шкалы (8:00)
 const timelineEnd = new Date(2024, 10, 23, 18, 0); // Конец шкалы (18:00)
-
-const genEvents = () =>
-  generateNonOverlappingDateRanges(timelineStart, timelineEnd, 4).map((ev, index) => {
-    return {
-      start: ev.start,
-      end: ev.end,
-      label: `Event ${index + 1}`
-    }
-  });
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -26,7 +17,7 @@ const root = ReactDOM.createRoot(
 
 const timelines = [...Array(10).keys()].map((_, index) => {
   return {
-    events: genEvents(),
+    events: genEvents(timelineStart, timelineEnd),
     title: `Мой таймлайн ${index + 1}`
   }
 })
@@ -35,7 +26,8 @@ const columns = [
   {
     content: <>{timelines.map((line, index) => {
       return <div className='timeline-title'>{line.title}</div>
-    })}</>
+    })}</>,
+    proportion: 1
   },
   {
     content: <>{[...timelines.map((line, index) => {
@@ -44,7 +36,8 @@ const columns = [
         timelineStart={timelineStart}
         timelineEnd={timelineEnd}
       />
-    }), <ScaleRuler start={timelineStart} end={timelineEnd} timeUnit="hours" unitStep={1} />]}</>
+    }), <ScaleRuler start={timelineStart} end={timelineEnd} timeUnit="hours" unitStep={1} />]}</>,
+    proportion: 4
   }
 ]
 
@@ -52,7 +45,7 @@ root.render(
   <React.StrictMode>
     <div>
       <h1>Timeline with Scale Example</h1>
-      {/* <Columns columns={columns} /> */}
+      <Columns columns={columns} />
       {
         timelines.map((line, index) => {
           return <Timeline
@@ -63,7 +56,13 @@ root.render(
         })
       }
 
-      <ScaleRuler start={timelineStart} end={timelineEnd} timeUnit="hours" unitStep={1} />
+      <ScaleRuler
+        start={timelineStart}
+        end={timelineEnd}
+        timeUnit="hours"
+        unitStep={1}
+        dateFormat={(date) => format(date, "HH:mm dd\u2011MM\u2011yyyy")}
+      />
     </div>
   </React.StrictMode>
 );

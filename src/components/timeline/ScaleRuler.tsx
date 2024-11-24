@@ -6,9 +6,16 @@ interface ScaleRulerProps {
   end: Date;
   timeUnit: "seconds" | "minutes" | "hours" | "days" | "months";
   unitStep: number; // Единица дробления
+  dateFormat?: (date: Date) => string; // Функция для форматирования меток
 }
 
-export const ScaleRuler: React.FC<ScaleRulerProps> = ({ start, end, timeUnit, unitStep }) => {
+export const ScaleRuler: React.FC<ScaleRulerProps> = ({
+  start,
+  end,
+  timeUnit,
+  unitStep,
+  dateFormat = (date) => date.toLocaleString(), // Значение по умолчанию
+}) => {
   const calculateMarks = (): Date[] => {
     const marks: Date[] = [];
     const current = new Date(start);
@@ -46,7 +53,7 @@ export const ScaleRuler: React.FC<ScaleRulerProps> = ({ start, end, timeUnit, un
       {marks.map((mark, index) => (
         <div className="scale-mark" key={index} style={{ left: `${(index / (marks.length - 1)) * 100}%` }}>
           <div className="mark-line"></div>
-          <div className="mark-label">{mark.toLocaleString()}</div>
+          <div className="mark-label">{dateFormat(mark)}</div>
         </div>
       ))}
     </div>
