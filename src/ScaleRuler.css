@@ -1,0 +1,33 @@
+.scale-ruler {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  border-top: 2px solid #ccc; /* Линия линейки */
+  overflow: hidden; /* Скрыть элементы, выходящие за границы */
+}
+
+.scale-mark {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mark-line {
+  width: 2px;
+  height: 20px;
+  background-color: #333; /* Линия деления */
+}
+
+.mark-label {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #555; /* Цвет текста метки */
+  max-width: 50px; /* Ограничить ширину метки */
+  text-align: center; /* Центрировать текст */
+  white-space: normal; /* Разрешить перенос текста */
+  overflow: hidden; /* Скрыть лишний текст */
+  text-overflow: ellipsis; /* Добавить троеточие, если текст обрезается */
+}
